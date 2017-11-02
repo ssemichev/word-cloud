@@ -4,6 +4,8 @@
 
 # wordcloud
 
+![ScreenShot](https://user-images.githubusercontent.com/5940291/32342789-bfc3defe-bfbe-11e7-9a98-d4eda250a921.png)
+
 ### Test the service locally
 
 To start dev server

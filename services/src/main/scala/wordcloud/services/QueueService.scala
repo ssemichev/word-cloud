@@ -27,9 +27,7 @@ class QueueService @Inject() ()(implicit ec: ExecutionContext) extends Actor wit
   var urls_topic: Vector[String] = Vector.empty
 
   def receive: Receive = {
-    case Insert(url) => {
-      insert(url) pipeTo sender
-    }
+    case Insert(url) => insert(url) pipeTo sender
     case Status => Future.successful { urls_topic.size.toString } pipeTo sender
   }
 
