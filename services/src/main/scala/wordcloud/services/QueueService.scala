@@ -1,9 +1,10 @@
 package wordcloud.services
 
+import java.net.URLDecoder
 import javax.inject.Inject
 
-import akka.pattern.pipe
 import akka.actor.{ Actor, ActorLogging }
+import akka.pattern.pipe
 import wordcloud.common.traits.NamedActor
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -33,10 +34,16 @@ class QueueService @Inject() ()(implicit ec: ExecutionContext) extends Actor wit
   }
 
   def insert(url: String): Future[String] = {
-    urls_topic = urls_topic :+ url
-    log.debug(s"Insert item... - ${urls_topic.size}")
+    normalizeUrl(url) foreach { _ =>
+      urls_topic = urls_topic :+ url
+      log.debug(s"Insert item... - ${urls_topic.size}")
+    }
     Future.successful {
       url
     }
+  }
+
+  def normalizeUrl(url: String): Option[String] = {
+    Option(URLDecoder.decode(url, "UTF-8")).filter(_.trim.nonEmpty)
   }
 }

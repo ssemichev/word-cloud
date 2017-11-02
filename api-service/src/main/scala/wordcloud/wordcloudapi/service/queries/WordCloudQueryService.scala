@@ -28,7 +28,7 @@ object WordCloudQueryService extends NamedActor {
 
 }
 
-class WordCloudQueryService @Inject()(@Named(QueueService.name) queueService: ActorRef)(implicit ec: ExecutionContext) extends Actor with ActorLogging {
+class WordCloudQueryService @Inject() (@Named(QueueService.name) queueService: ActorRef)(implicit ec: ExecutionContext) extends Actor with ActorLogging {
 
   import WordCloudQueryService._
 
@@ -38,8 +38,8 @@ class WordCloudQueryService @Inject()(@Named(QueueService.name) queueService: Ac
 
   def receive: Receive = {
     case FindTopWordsQuery(criteria) => findBy(criteria) pipeTo sender
-    case PostUrl(url) => queueService ? Insert(url) pipeTo sender
-    case GetQueueStatus => queueService ? Status pipeTo sender
+    case PostUrl(url)                => queueService ? Insert(url) pipeTo sender
+    case GetQueueStatus              => queueService ? Status pipeTo sender
   }
 
   def findBy(criteria: WordCloudSearchCriteria): Future[TopWordsResponse] = {

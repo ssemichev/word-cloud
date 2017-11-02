@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.com/deepwordcloud/wordcloud.svg?token=pvwDNvw6P8fj9zJxpA1p&branch=master)](https://travis-ci.com/deepwordcloud/wordcloud)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/675ff3c8d31f469d9e96248930ca3dc5)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deepwordcloud/wordcloud&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/675ff3c8d31f469d9e96248930ca3dc5)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deepwordcloud/wordcloud&amp;utm_campaign=Badge_Coverage)
+[![Build Status]()](https://travis-ci.com/wordcloud/wordcloud)
+[![Codacy Badge]()](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wordcloud/wordcloud&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge]()](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deepwordcloud/wordcloud&amp;utm_campaign=Badge_Coverage)
 
 # wordcloud
 
@@ -24,6 +24,10 @@ curl -i -w %{time_connect}:%{time_starttransfer}:%{time_total} http://127.0.0.1:
 curl -i http://127.0.0.1:9000/v1/about
 curl -i http://127.0.0.1:9000/v1/status
 curl -XGET 'http://127.0.0.1:9000/v1/search?top=100' --user crud-user:crud-password
+curl -XPOST 'http://127.0.0.1:9000/v1/url=http://test.com' --user crud-user:crud-password
+curl -XGET 'http://127.0.0.1:9000/v1/queuestatus' --user crud-user:crud-password
+
+./simulateRequestsFast.sh http://127.0.0.1 9000/v1 url "--user crud-user:crud-password"
 ```
 
 ### Make
