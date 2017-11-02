@@ -14,6 +14,10 @@ trait ResponseHandling {
     complete(code)
   }
 
+  def respond(string: String): Route = {
+    complete(string)
+  }
+
   def respond[From <: DomainObject, To <: Contract](value: From)(implicit translator: Translator[From, To]): Route = {
     complete(translator.translate(value))
   }

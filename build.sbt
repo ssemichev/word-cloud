@@ -8,6 +8,7 @@ name := "wordcloud"
 lazy val publishedProjects = Seq[ProjectReference](
   TestKitProject,
   CommonProject,
+  WordCloudServicesProject,
   WordCloudApiServiceProject,
   WordCloudApiRestProject
 )
@@ -33,14 +34,20 @@ lazy val CommonProject = BuildProject("common")
     libraryDependencies ++= Dependencies.common
   )
 
+lazy val WordCloudServicesProject = BuildProject("wordcloud-services", "services")
+  .settings(
+    libraryDependencies ++= Dependencies.wordCloudServices
+  )
+  .dependsOn(CommonProject, TestKitProject % "test,it,e2e,bench")
+
 lazy val WordCloudApiServiceProject = BuildProject("wordcloud-api-service", "api-service")
   .settings(
     libraryDependencies ++= Dependencies.wordCloudApiService
   )
-  .dependsOn(CommonProject, TestKitProject % "test,it,e2e,bench")
+  .dependsOn(CommonProject, WordCloudServicesProject, TestKitProject % "test,it,e2e,bench")
 
 lazy val WordCloudApiRestProject: Project = BuildProject("wordcloud-api-rest", "api-rest")
-  .enablePlugins(JavaAppPackaging, DockerPlugin, BuildInfoPlugin, GitVersioning)
+  .enablePlugins(JavaAppPackaging, DockerPlugin, AshScriptPlugin, BuildInfoPlugin, GitVersioning)
   .settings(
     libraryDependencies ++= Dependencies.wordCloudApiRest,
     dockerExposedPorts := Seq(9000)

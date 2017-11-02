@@ -9,6 +9,7 @@ import wordcloud.wordcloudapi.rest.http.WordCloudQueryHttpService
 import wordcloud.wordcloudapi.rest.ioc.guice.GuiceAkkaActorRefProvider
 import wordcloud.wordcloudapi.service.queries.WordCloudQueryService
 import net.codingwell.scalaguice.ScalaPrivateModule
+import wordcloud.services.QueueService
 import wordcloud.wordcloudapi.rest.http.routes.WordCloudQueryServiceRoute
 
 private[wordcloud] class ServicesModule extends PrivateModule with ScalaPrivateModule with GuiceAkkaActorRefProvider {
@@ -17,6 +18,7 @@ private[wordcloud] class ServicesModule extends PrivateModule with ScalaPrivateM
     installModules()
     setupServices()
 
+    expose[Actor].annotatedWith(Names.named(QueueService.name))
     expose[Actor].annotatedWith(Names.named(WordCloudQueryService.name))
     expose[WordCloudQueryHttpService]
   }
@@ -26,10 +28,20 @@ private[wordcloud] class ServicesModule extends PrivateModule with ScalaPrivateM
   }
 
   private[this] def setupServices(): Unit = {
+
+    bind[Actor].annotatedWithName(QueueService.name).to[QueueService]
+
     bind[Actor].annotatedWithName(WordCloudQueryService.name).to[WordCloudQueryService]
 
     bind[WordCloudQueryServiceRoute].in[Singleton]
     bind[WordCloudQueryHttpService].in[Singleton]
+  }
+
+  @Provides
+  @Singleton
+  @Named(QueueService.name)
+  def provideQueueServiceRef(@Inject() system: ActorSystem): ActorRef = {
+    provideActorRef(system, QueueService.name, Some(QueueService.name))
   }
 
   @Provides

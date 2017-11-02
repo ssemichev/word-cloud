@@ -30,7 +30,7 @@ import scalariform.formatter.preferences.DoubleIndentClassDeclaration
 object Settings {
 
   lazy val buildSettings = Seq(
-    organization := "test",
+    organization := "wordcloud",
     description := """API Services""",
     organizationHomepage := Some(url("https://wordcount.com")),
     scalaVersion := Versions.ScalaVersion,
@@ -58,13 +58,13 @@ object Settings {
     pollInterval := 1000,
     offline := true,
     initialCommands := initialCommandsValue.mkString("\n"),
-    initialCommands in console += "//import deepwordcloud._",
+    initialCommands in console += "//import wordcloud._",
     initialCommands in (Compile, consoleQuick) := (initialCommands in Compile).value,
     resolvers := Seq(Resolver.sonatypeRepo("snapshots"), Resolver.jcenterRepo)
   ) ++ scalariformSettings
 
   lazy val dockerSettings = Seq(
-      dockerBaseImage := "harisekhon/ubuntu-java:jre8",
+      dockerBaseImage := "openjdk:8-jre-alpine",
       dockerRepository := Some(organization.value),
       dockerEntrypoint := Seq("bin/%s" format executableScriptName.value, "-Dconfig.resource=docker.conf"),
       makeDockerVersion := makeDockerVersionTaskImpl.value

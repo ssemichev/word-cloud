@@ -53,7 +53,23 @@ class WordCloudQueryServiceRoute @Inject() (@Named(WordCloudQueryService.name) w
           }
         }
       }
-    }
+    } ~
+      pathEndOrSingleSlash {
+        post {
+          parameters('url) { (url) =>
+            postUrl(url)
+          }
+        }
+      } ~
+      pathPrefix("queuestatus") {
+        pathEndOrSingleSlash {
+          get {
+            onSuccess((wordCloudQueryService ? GetQueueStatus).mapTo[String]) {
+              status: String => respond(status)
+            }
+          }
+        }
+      }
 
   private[this] def doSearch(request: WordCloudSearchRequest)(implicit
     requestTranslator: Translator[WordCloudSearchRequest, WordCloudSearchCriteria],
@@ -62,6 +78,10 @@ class WordCloudQueryServiceRoute @Inject() (@Named(WordCloudQueryService.name) w
       case response if response.words.nonEmpty => respond(response)(responseTranslator)
       case _                                   => respond(StatusCodes.NoContent)
     }
+  }
+
+  private[this] def postUrl(url: String): Route = {
+    onSuccess(wordCloudQueryService ? PostUrl(url))(_ => respond(StatusCodes.OK))
   }
 }
 

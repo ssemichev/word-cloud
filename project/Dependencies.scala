@@ -51,7 +51,9 @@ object Dependencies {
 
   lazy val common = shared ++ json4sJson ++ Seq(Test.scalaTest % "test")
 
-  lazy val wordCloudApiService = shared ++ akkaHttp
+  lazy val wordCloudServices = shared ++ akka
 
   lazy val wordCloudApiRest = shared ++ akka
+
+  lazy val wordCloudApiService = shared ++ akkaHttp
 }
